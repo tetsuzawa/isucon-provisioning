@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  terraform:
+    image: hashicorp/terraform:1.2.4
+    volumes:
+      - ~/.aws:/root/.aws
+      - ~/.ssh:/root/.ssh
+      - ./${SCOPE}:/app/${SCOPE}
+      - ./vendor:/app/vendor
+    working_dir: /app/${SCOPE}
+    environment:
+      - AWS_PROFILE=${AWS_PROFILE:-tetsu-varmos-admin}
+      - AWS_DEFAULT_REGION=${AWS_DEFAULT_REGION:-ap-northeast-1}
+    network_mode: bridge
