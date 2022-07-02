@@ -18,11 +18,14 @@ terraform_remote_s3_key    = $(shell echo "$(SCOPE)" | sed -e 's/\(\/\)*$$//g')/
 SCOPE :=
 scope_dirs := $(shell find * -mindepth 1 -type f -name '_tf_config.tf' | egrep -v '(.terraform|vendor)' | xargs -I {} dirname {} | sort | uniq)
 
+TARGET :=
+
 ## Bootstrap
 .PHONY: plan_all $(scope_dirs) plan apply test lint* __require_scope_val tfstatediff clean
 
 plan: terraform/plan
 apply: terraform/apply
+apply/target: terraform/apply/target
 destroy: terraform/destroy
 test: lint
 lint: lint/json terraform/validate
@@ -76,6 +79,9 @@ terraform/plan: terraform/init terraform/fmt
 
 terraform/apply: terraform/init terraform/fmt
 	$(TERRAFORM) apply -auto-approve=false -parallelism=1000
+
+terraform/apply/target: terraform/init terraform/fmt
+	$(TERRAFORM) apply -auto-approve=false -parallelism=1000 --target=$(TARGET)
 
 terraform/destroy: terraform/init terraform/fmt
 	$(TERRAFORM) apply -destroy -auto-approve=false -parallelism=1000

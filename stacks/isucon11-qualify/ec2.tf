@@ -19,6 +19,7 @@ resource "aws_spot_instance_request" "bench" {
   instance_type                  = "c5.xlarge"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
+  wait_for_fulfillment           = true
 
   security_groups             = [aws_security_group.security-group.id]
   subnet_id                   = aws_subnet.subnet.id
@@ -37,12 +38,19 @@ resource "aws_spot_instance_request" "bench" {
   }
 }
 
+resource "aws_ec2_tag" "bench" {
+  key         = "Name"
+  resource_id = aws_spot_instance_request.bench.spot_instance_id
+  value       = "isucon-bench"
+}
+
 resource "aws_spot_instance_request" "instance-1" {
   ami                            = var.isucon11-qualify-ami-id
   spot_price                     = var.isucon11-qualify-instance-spot-price
   instance_type                  = "c5.large"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
+  wait_for_fulfillment           = true
 
   security_groups             = [aws_security_group.security-group.id]
   subnet_id                   = aws_subnet.subnet.id
@@ -54,6 +62,12 @@ resource "aws_spot_instance_request" "instance-1" {
     Name = "isucon-instance"
     Num  = "1"
   }
+}
+
+resource "aws_ec2_tag" "instance-1" {
+  key         = "Name"
+  resource_id = aws_spot_instance_request.instance-1.spot_instance_id
+  value       = "isucon-instance-1"
 }
 
 #data "aws_instance" "bench" {
