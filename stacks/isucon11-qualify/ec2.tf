@@ -69,21 +69,3 @@ resource "aws_ec2_tag" "instance-1" {
   resource_id = aws_spot_instance_request.instance-1.spot_instance_id
   value       = "isucon-instance-1"
 }
-
-#data "aws_instance" "bench" {
-#  filter {
-#    name   = "tag:Name"
-#    values = ["isucon-bench"]
-#  }
-#
-#  depends_on = [aws_spot_instance_request.bench]
-#}
-#
-#data "aws_instance" "instances" {
-#  filter {
-#    name   = "tag:Name"
-#    values = ["isucon-instance"]
-#  }
-#
-#  depends_on = [aws_spot_instance_request.instance-1]
-#}
