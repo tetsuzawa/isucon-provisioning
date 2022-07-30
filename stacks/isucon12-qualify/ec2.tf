@@ -1,21 +1,21 @@
-variable "isucon11-qualify-ami-id" {
+variable "isucon12-qualify-ami-id" {
   type    = string
-  default = "ami-0796be4f4814fc3d5"
+  default = "ami-052efd3df9dad4825"
 }
 
-variable "isucon11-qualify-bench-spot-price" {
+variable "isucon12-qualify-bench-spot-price" {
   type    = string
   default = "0.090"
 }
 
-variable "isucon11-qualify-instance-spot-price" {
+variable "isucon12-qualify-instance-spot-price" {
   type    = string
   default = "0.040"
 }
 
 resource "aws_spot_instance_request" "bench" {
-  ami                            = var.isucon11-qualify-ami-id
-  spot_price                     = var.isucon11-qualify-bench-spot-price
+  ami                            = var.isucon12-qualify-ami-id
+  spot_price                     = var.isucon12-qualify-bench-spot-price
   instance_type                  = "c5.xlarge"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
@@ -26,6 +26,8 @@ resource "aws_spot_instance_request" "bench" {
   private_ip                  = "192.168.0.10"
   key_name                    = var.key_pair_name_isucon
   associate_public_ip_address = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
 
   ebs_block_device {
     device_name = "/dev/sda1"
@@ -44,9 +46,16 @@ resource "aws_ec2_tag" "bench" {
   value       = "isucon-bench"
 }
 
+resource "aws_eip" "bench" {
+  instance = aws_spot_instance_request.bench.spot_instance_id
+  vpc = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
+}
+
 resource "aws_spot_instance_request" "instance-1" {
-  ami                            = var.isucon11-qualify-ami-id
-  spot_price                     = var.isucon11-qualify-instance-spot-price
+  ami                            = var.isucon12-qualify-ami-id
+  spot_price                     = var.isucon12-qualify-instance-spot-price
   instance_type                  = "c5.large"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
@@ -57,6 +66,8 @@ resource "aws_spot_instance_request" "instance-1" {
   private_ip                  = "192.168.0.11"
   key_name                    = var.key_pair_name_isucon
   associate_public_ip_address = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
 
   tags = {
     Name = "isucon-instance"
@@ -70,9 +81,16 @@ resource "aws_ec2_tag" "instance-1" {
   value       = "isucon-instance-1"
 }
 
+resource "aws_eip" "instance-1" {
+  instance = aws_spot_instance_request.instance-1.spot_instance_id
+  vpc = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
+}
+
 resource "aws_spot_instance_request" "instance-2" {
-  ami                            = var.isucon11-qualify-ami-id
-  spot_price                     = var.isucon11-qualify-instance-spot-price
+  ami                            = var.isucon12-qualify-ami-id
+  spot_price                     = var.isucon12-qualify-instance-spot-price
   instance_type                  = "c5.large"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
@@ -83,6 +101,8 @@ resource "aws_spot_instance_request" "instance-2" {
   private_ip                  = "192.168.0.12"
   key_name                    = var.key_pair_name_isucon
   associate_public_ip_address = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
 
   tags = {
     Name = "isucon-instance"
@@ -96,9 +116,16 @@ resource "aws_ec2_tag" "instance-2" {
   value       = "isucon-instance-2"
 }
 
+resource "aws_eip" "instance-2" {
+  instance = aws_spot_instance_request.instance-2.spot_instance_id
+  vpc = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
+}
+
 resource "aws_spot_instance_request" "instance-3" {
-  ami                            = var.isucon11-qualify-ami-id
-  spot_price                     = var.isucon11-qualify-instance-spot-price
+  ami                            = var.isucon12-qualify-ami-id
+  spot_price                     = var.isucon12-qualify-instance-spot-price
   instance_type                  = "c5.large"
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
@@ -110,6 +137,8 @@ resource "aws_spot_instance_request" "instance-3" {
   key_name                    = var.key_pair_name_isucon
   associate_public_ip_address = true
 
+  depends_on = [aws_internet_gateway.internet-gateway]
+
   tags = {
     Name = "isucon-instance"
     Num  = "3"
@@ -120,4 +149,11 @@ resource "aws_ec2_tag" "instance-3" {
   key         = "Name"
   resource_id = aws_spot_instance_request.instance-3.spot_instance_id
   value       = "isucon-instance-3"
+}
+
+resource "aws_eip" "instance-3" {
+  instance = aws_spot_instance_request.instance-3.spot_instance_id
+  vpc = true
+
+  depends_on = [aws_internet_gateway.internet-gateway]
 }
