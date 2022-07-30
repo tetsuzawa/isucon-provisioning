@@ -1,6 +1,6 @@
 variable "isucon12-qualify-ami-id" {
   type    = string
-  default = "ami-052efd3df9dad4825"
+  default = "ami-0ca04106bc403aeac"
 }
 
 variable "isucon12-qualify-bench-spot-price" {
