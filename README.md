@@ -29,3 +29,8 @@ make -C stacks SCOPE=isuconXX-qualify apply
 ```
 make -C stacks SCOPE=isuconXX-qualify destroy
 ```
+
+
+# メモ
+
+isucon本番と同じ環境にするには ssh keyのインストールとかを事前にやっておく必要がある。
