@@ -11,5 +11,5 @@ terraform {
 
 provider "aws" {
   region  = "ap-northeast-1"
-  profile = "soudai-taki"
+  profile = "tetsu-varmos-admin"
 }

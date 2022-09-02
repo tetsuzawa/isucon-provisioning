@@ -1,6 +1,6 @@
 variable "isucon12-qualify-ami-id" {
   type    = string
-  default = "ami-0ca04106bc403aeac"
+  default = "ami-0208a7b710b4e96dd"
 }
 
 variable "isucon12-qualify-bench-spot-price" {
@@ -20,12 +20,11 @@ resource "aws_spot_instance_request" "bench" {
   spot_type                      = "persistent"
   instance_interruption_behavior = "stop"
   wait_for_fulfillment           = true
-
-  security_groups             = [aws_security_group.security-group.id]
-  subnet_id                   = aws_subnet.subnet.id
-  private_ip                  = "192.168.0.10"
-  key_name                    = var.key_pair_name_isucon
-  associate_public_ip_address = true
+  security_groups                = [aws_security_group.security-group.id]
+  subnet_id                      = aws_subnet.subnet.id
+  private_ip                     = "192.168.0.10"
+  key_name                       = var.key_pair_name_isucon
+  associate_public_ip_address    = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
 
@@ -48,7 +47,7 @@ resource "aws_ec2_tag" "bench" {
 
 resource "aws_eip" "bench" {
   instance = aws_spot_instance_request.bench.spot_instance_id
-  vpc = true
+  vpc      = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
 }
@@ -83,7 +82,7 @@ resource "aws_ec2_tag" "instance-1" {
 
 resource "aws_eip" "instance-1" {
   instance = aws_spot_instance_request.instance-1.spot_instance_id
-  vpc = true
+  vpc      = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
 }
@@ -118,7 +117,7 @@ resource "aws_ec2_tag" "instance-2" {
 
 resource "aws_eip" "instance-2" {
   instance = aws_spot_instance_request.instance-2.spot_instance_id
-  vpc = true
+  vpc      = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
 }
@@ -153,7 +152,7 @@ resource "aws_ec2_tag" "instance-3" {
 
 resource "aws_eip" "instance-3" {
   instance = aws_spot_instance_request.instance-3.spot_instance_id
-  vpc = true
+  vpc      = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
 }

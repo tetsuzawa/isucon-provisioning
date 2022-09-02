@@ -4,5 +4,5 @@ resource "aws_subnet" "subnet" {
   availability_zone       = "ap-northeast-1c"
   map_public_ip_on_launch = true
 
-  tags =  local.tags
+  tags = local.tags
 }
