@@ -1,4 +1,4 @@
-resource "aws_security_group" "security-group" {
+resource "aws_security_group" "security_group" {
   name   = "isucon"
   vpc_id = aws_vpc.vpc.id
 
@@ -27,7 +27,7 @@ resource "aws_security_group" "security-group" {
     from_port   = 0
     protocol    = "-1"
     to_port     = 0
-    cidr_blocks = ["192.168.0.0/24"]
+    cidr_blocks = [aws_vpc.vpc.cidr_block]
   }
 
   egress {
@@ -37,5 +37,5 @@ resource "aws_security_group" "security-group" {
     cidr_blocks = ["0.0.0.0/0"]
   }
 
-  tags = local.tags
+  tags = var.tags
 }

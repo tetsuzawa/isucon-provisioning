@@ -1,5 +1,5 @@
 resource "aws_internet_gateway" "internet-gateway" {
-  tags = local.tags
+  tags = var.tags
 }
 
 resource "aws_internet_gateway_attachment" "internet-gateway-attachment" {

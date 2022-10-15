@@ -1,8 +1,8 @@
 resource "aws_subnet" "subnet" {
-  cidr_block              = "192.168.0.0/24"
+  cidr_block              = var.subnet_cidr_block
   vpc_id                  = aws_vpc.vpc.id
-  availability_zone       = "ap-northeast-1c"
+  availability_zone       = var.subnet_availability_zone
   map_public_ip_on_launch = true
 
-  tags = local.tags
+  tags = var.tags
 }
