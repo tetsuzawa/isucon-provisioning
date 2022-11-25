@@ -3,5 +3,5 @@ output "instance_id" {
 }
 
 output "public_ip" {
-  value = aws_spot_instance_request.spot_instance.public_ip
+  value = aws_eip.spot_instance.public_ip
 }
