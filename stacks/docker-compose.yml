@@ -8,5 +8,5 @@ services:
       - ~/.ssh:/root/.ssh
       - ./${SCOPE}:/app/${SCOPE}
       - ./vendor:/app/vendor
-    working_dir: /app/
+    working_dir: /app/${SCOPE}
     network_mode: bridge

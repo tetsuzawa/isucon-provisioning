@@ -1,20 +1,21 @@
-AWS_PROFILE        := tetsu-varmos-admin
 AWS_DEFAULT_REGION := ap-northeast-1
+KEY_NAME := isucon
 TFSTATE_BUCKET := isucon-provisioning-tfstate
 TFSTATE_KEY = $(SCOPE)/terraform.tfstate
-DOCKER_TERRAFORM = docker-compose run --rm \
+TERRAFORM = docker-compose run --rm \
 	-e AWS_PROFILE=$(AWS_PROFILE) \
 	-e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) \
 	-e SCOPE=$(SCOPE) \
 	-e TF_VAR_state_bucket=$(TFSTATE_BUCKET) \
 	terraform
 
+
 .PHONY: all plan apply init workspace import mv fmt_r
 all:
 	@more Makefile
 
 init: __require_scope
-	$(DOCKER_TERRAFORM) init \
+	$(TERRAFORM) init \
 		-upgrade \
 		-get=true \
 		-backend=true \
@@ -23,27 +24,35 @@ init: __require_scope
 		-backend-config="bucket=$(TFSTATE_BUCKET)" \
 		-backend-config="key=$(TFSTATE_KEY)"
 
+plan: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
 plan: init fmt
-	$(DOCKER_TERRAFORM) plan -parallelism=1000
+	$(TERRAFORM) plan $(KEY_NAME_VAR) -parallelism=1000
 
 show: init
-	$(DOCKER_TERRAFORM) show
+	$(TERRAFORM) show
 
 rm: init
-	$(DOCKER_TERRAFORM) state rm $(ARG)
+	$(TERRAFORM) state rm $(ARG)
 
-target_resource:=
+plan_target: target_resource:=
 plan_target: init
-	$(DOCKER_TERRAFORM) plan -target=$(target_resource)
+	$(TERRAFORM) plan -target=$(target)
 
+apply: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
 apply: init fmt
-	$(DOCKER_TERRAFORM) apply -auto-approve=false -parallelism=1000
+	$(TERRAFORM) apply $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000
 
+apply_target: target:=
+apply_target: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
+apply_target: init fmt
+	$(TERRAFORM) apply $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000 -target=$(target)
+
+destroy: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
 destroy: init
-	$(DOCKER_TERRAFORM) destroy -auto-approve=false -parallelism=1000 $(ARG)
+	$(TERRAFORM) destroy $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000 $(ARG)
 
 fmt: __require_scope
-	$(DOCKER_TERRAFORM) fmt
+	$(TERRAFORM) fmt
 
 __require_scope:
 ifeq ($(SCOPE),)
