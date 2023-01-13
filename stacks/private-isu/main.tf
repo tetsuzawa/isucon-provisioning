@@ -8,7 +8,7 @@ module "network" {
 }
 
 module "benchmarker" {
-  source = "../../modules/spot_instance"
+  source = "../../modules/instance"
 
   ami_id             = var.ami_id_benchmarker
   instance_name      = "benchmarker"
@@ -16,13 +16,12 @@ module "benchmarker" {
   key_name           = var.key_name
   private_ip         = "192.168.0.10"
   security_group_ids = [module.network.security_group_id]
-  spot_price         = var.spot_price_benchmarker
   subnet_id          = module.network.subnet_id
   tags               = local.tags
 }
 
 module "worker_1" {
-  source = "../../modules/spot_instance"
+  source = "../../modules/instance"
 
   ami_id             = var.ami_id_worker_1
   instance_name      = "worker-1"
@@ -30,35 +29,32 @@ module "worker_1" {
   key_name           = var.key_name
   private_ip         = "192.168.0.11"
   security_group_ids = [module.network.security_group_id]
-  spot_price         = var.spot_price_worker
   subnet_id          = module.network.subnet_id
   tags               = local.tags
 }
 
-module "worker_2" {
-  source = "../../modules/spot_instance"
-
-  ami_id             = var.ami_id_worker_2
-  instance_name      = "worker-2"
-  instance_type      = var.instance_type_worker
-  key_name           = var.key_name
-  private_ip         = "192.168.0.12"
-  security_group_ids = [module.network.security_group_id]
-  spot_price         = var.spot_price_worker
-  subnet_id          = module.network.subnet_id
-  tags               = local.tags
-}
-
-module "worker_3" {
-  source = "../../modules/spot_instance"
-
-  ami_id             = var.ami_id_worker_3
-  instance_name      = "worker-3"
-  instance_type      = var.instance_type_worker
-  key_name           = var.key_name
-  private_ip         = "192.168.0.13"
-  security_group_ids = [module.network.security_group_id]
-  spot_price         = var.spot_price_worker
-  subnet_id          = module.network.subnet_id
-  tags               = local.tags
-}
+# module "worker_2" {
+#   source = "../../modules/instance"
+# 
+#   ami_id             = var.ami_id_worker_2
+#   instance_name      = "worker-2"
+#   instance_type      = var.instance_type_worker
+#   key_name           = var.key_name
+#   private_ip         = "192.168.0.12"
+#   security_group_ids = [module.network.security_group_id]
+#   subnet_id          = module.network.subnet_id
+#   tags               = local.tags
+# }
+# 
+# module "worker_3" {
+#   source = "../../modules/instance"
+# 
+#   ami_id             = var.ami_id_worker_3
+#   instance_name      = "worker-3"
+#   instance_type      = var.instance_type_worker
+#   key_name           = var.key_name
+#   private_ip         = "192.168.0.13"
+#   security_group_ids = [module.network.security_group_id]
+#   subnet_id          = module.network.subnet_id
+#   tags               = local.tags
+# }
