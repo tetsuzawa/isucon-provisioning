@@ -6,7 +6,8 @@ services:
     volumes:
       - ~/.aws:/root/.aws
       - ~/.ssh:/root/.ssh
-      - ./${SCOPE}:/app/${SCOPE}
-      - ./vendor:/app/vendor
-    working_dir: /app/${SCOPE}
+      - ./modules:/stacks/modules
+      - ./${SCOPE}:/stacks/${SCOPE}
+      - ./vendor:/stacks/vendor
+    working_dir: /stacks/${SCOPE}
     network_mode: bridge
