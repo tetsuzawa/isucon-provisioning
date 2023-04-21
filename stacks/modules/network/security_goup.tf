@@ -24,6 +24,34 @@ resource "aws_security_group" "security_group" {
   }
 
   ingress {
+    from_port   = 5555
+    protocol    = "tcp"
+    to_port     = 5555
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 7000
+    protocol    = "tcp"
+    to_port     = 7000
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 8000
+    protocol    = "tcp"
+    to_port     = 8000
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port   = 9292
+    protocol    = "tcp"
+    to_port     = 9292
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
     from_port   = 0
     protocol    = "-1"
     to_port     = 0

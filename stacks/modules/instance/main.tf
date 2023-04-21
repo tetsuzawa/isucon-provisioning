@@ -9,7 +9,7 @@ resource "aws_instance" "instance" {
 
   ebs_block_device {
     device_name = "/dev/sda1"
-    volume_size = 20
+    volume_size = var.ebs_volume_size
     volume_type = "gp3"
   }
 
