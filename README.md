@@ -1,8 +1,8 @@
 # isucon-provisioning
 
-spot instanceでisucon環境作る君です
+isucon環境作る
 
-AWS上にkey pairを持ってる前提です
+AWS上にkey pairを持ってる前提 & s3にtfstateを置くバケットがある前提
 
 
 AWS_PROFILE
