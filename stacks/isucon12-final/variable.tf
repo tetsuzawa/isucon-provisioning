@@ -4,22 +4,32 @@ variable "key_name" {
 
 variable "ami_id_benchmarker" {
   type    = string
-  default = "ami-00acaccebe03b5bed"
+  default = "ami-0769691a5a9878f4e"
 }
 
 variable "ami_id_worker_1" {
   type    = string
-  default = "ami-00acaccebe03b5bed"
+  default = "ami-03714bae35c174504"
 }
 
 variable "ami_id_worker_2" {
   type    = string
-  default = "ami-00acaccebe03b5bed"
+  default = "ami-03714bae35c174504"
 }
 
 variable "ami_id_worker_3" {
   type    = string
-  default = "ami-00acaccebe03b5bed"
+  default = "ami-03714bae35c174504"
+}
+
+variable "ami_id_worker_4" {
+  type    = string
+  default = "ami-03714bae35c174504"
+}
+
+variable "ami_id_worker_5" {
+  type    = string
+  default = "ami-03714bae35c174504"
 }
 
 #variable "spot_price_benchmarker" {

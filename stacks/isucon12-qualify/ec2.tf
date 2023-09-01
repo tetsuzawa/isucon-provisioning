@@ -10,7 +10,7 @@ variable "isucon12-qualify-bench-spot-price" {
 
 variable "isucon12-qualify-instance-spot-price" {
   type    = string
-  default = "0.040"
+  default = "0.050"
 }
 
 resource "aws_spot_instance_request" "bench" {
@@ -68,6 +68,12 @@ resource "aws_spot_instance_request" "instance-1" {
 
   depends_on = [aws_internet_gateway.internet-gateway]
 
+  ebs_block_device {
+    device_name = "/dev/sda1"
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
   tags = {
     Name = "isucon-instance"
     Num  = "1"
@@ -103,6 +109,12 @@ resource "aws_spot_instance_request" "instance-2" {
 
   depends_on = [aws_internet_gateway.internet-gateway]
 
+  ebs_block_device {
+    device_name = "/dev/sda1"
+    volume_size = 20
+    volume_type = "gp3"
+  }
+
   tags = {
     Name = "isucon-instance"
     Num  = "2"
@@ -137,6 +149,12 @@ resource "aws_spot_instance_request" "instance-3" {
   associate_public_ip_address = true
 
   depends_on = [aws_internet_gateway.internet-gateway]
+
+  ebs_block_device {
+    device_name = "/dev/sda1"
+    volume_size = 20
+    volume_type = "gp3"
+  }
 
   tags = {
     Name = "isucon-instance"

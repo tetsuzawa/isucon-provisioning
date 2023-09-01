@@ -1,5 +1,5 @@
 module "network" {
-  source = "../../modules/network"
+  source = "../modules/network"
 
   vpc_cidr_block           = "192.168.0.0/16"
   subnet_cidr_block        = "192.168.0.0/24"
@@ -8,7 +8,7 @@ module "network" {
 }
 
 module "benchmarker" {
-  source = "../../modules/instance"
+  source = "../modules/instance"
 
   ami_id             = var.ami_id_benchmarker
   instance_name      = "benchmarker"
@@ -21,7 +21,7 @@ module "benchmarker" {
 }
 
 module "worker_1" {
-  source = "../../modules/instance"
+  source = "../modules/instance"
 
   ami_id             = var.ami_id_worker_1
   instance_name      = "worker-1"

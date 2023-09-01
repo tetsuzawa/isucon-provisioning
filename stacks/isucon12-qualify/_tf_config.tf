@@ -1,5 +1,5 @@
 terraform {
-  backend "s3" { /* see Makefile terraform/init for actual options */ }
+  #  backend "s3" { /* see Makefile terraform/init for actual options */ }
   required_version = "~> 1.2.4"
   required_providers {
     aws = {
@@ -11,5 +11,5 @@ terraform {
 
 provider "aws" {
   region  = "ap-northeast-1"
-  profile = "tetsu-varmos-admin"
+  profile = "soudai-taki"
 }
