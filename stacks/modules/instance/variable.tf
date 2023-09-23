@@ -6,4 +6,6 @@ variable "subnet_id" { type = string }
 variable "private_ip" { type = string }
 variable "key_name" { type = string }
 variable "ebs_volume_size" { type = number }
+variable "ssh_user_name" { type = string }
+variable "github_ids" { type = list(string) }
 variable "tags" { type = map(any) }

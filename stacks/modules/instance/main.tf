@@ -7,6 +7,18 @@ resource "aws_instance" "instance" {
   key_name                    = var.key_name
   associate_public_ip_address = true
   iam_instance_profile        = ""
+  user_data                   = <<-EOF
+                                    #!/bin/bash
+                                    set -eux
+                                    echo "setting up ssh..."
+                                    sed -i -r -e "s/.*PubkeyAuthentication\s(yes|no)/PubkeyAuthentication yes/" /etc/ssh/sshd_config
+                                    sed -i -r -e "s/.*AllowAgentForwarding\s(yes|no)/AllowAgentForwarding yes/" /etc/ssh/sshd_config
+                                    systemctl restart sshd
+                                    mkdir -p /home/${var.ssh_user_name}/.ssh
+                                    ${join("\n", formatlist(format("curl -s https://github.com/%%s.keys >> /home/%s/.ssh/authorized_keys", var.ssh_user_name), var.github_ids))}
+                                    chown -R ${var.ssh_user_name}:${var.ssh_user_name} /home/${var.ssh_user_name}/.ssh
+                                    echo "ssh setup done"
+                                    EOF
 
   ebs_block_device {
     device_name = "/dev/sda1"
@@ -15,7 +27,7 @@ resource "aws_instance" "instance" {
   }
 
   tags = merge({
-    Name           = var.instance_name
+    Name = var.instance_name
   }, var.tags)
 }
 
@@ -23,16 +35,3 @@ resource "aws_eip" "instance" {
   instance = aws_instance.instance.id
   vpc      = true
 }
-
-
-#data "template_cloudinit_config" "user_data" {
-#    part {
-#        content_type = "text/cloud-config"
-#        content      = <<EOT
-#users:
-#  - name: isucon
-#    ssh_import_id
-#
-#EOT
-#    }
-#}
