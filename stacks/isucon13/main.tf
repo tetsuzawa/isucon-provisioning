@@ -39,7 +39,7 @@ module "bench" {
   subnet_id          = module.network.subnet_id
   ebs_volume_size    = 40
   ssh_user_name      = "isucon"
-  github_ids         = ["tetsuzawa", "soudai", "mackee"]
+  github_ids         = ["tetsuzawa", "soudai", "mackee", "masayoshi634"]
   tags               = {}
 }
 
@@ -55,7 +55,7 @@ module "isu_1" {
   subnet_id          = module.network.subnet_id
   ebs_volume_size    = 40
   ssh_user_name      = "isucon"
-  github_ids         = ["tetsuzawa", "soudai", "mackee"]
+  github_ids         = ["tetsuzawa", "soudai", "mackee", "masayoshi634"]
   tags               = {}
 }
 
@@ -71,7 +71,7 @@ module "isu_2" {
   subnet_id          = module.network.subnet_id
   ebs_volume_size    = 40
   ssh_user_name      = "isucon"
-  github_ids         = ["tetsuzawa", "soudai", "mackee"]
+  github_ids         = ["tetsuzawa", "soudai", "mackee", "masayoshi634"]
   tags               = {}
 }
 
@@ -87,6 +87,6 @@ module "isu_3" {
   subnet_id          = module.network.subnet_id
   ebs_volume_size    = 40
   ssh_user_name      = "isucon"
-  github_ids         = ["tetsuzawa", "soudai", "mackee"]
+  github_ids         = ["tetsuzawa", "soudai", "mackee", "masayoshi634"]
   tags               = {}
 }
