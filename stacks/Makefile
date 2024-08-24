@@ -1,15 +1,5 @@
-AWS_PROFILE := tetsu-varmos-admin
-AWS_DEFAULT_REGION := ap-northeast-1
-TFSTATE_BUCKET := isucon-provisioning-tfstate
-TFSTATE_KEY = $(SCOPE)/terraform.tfstate
 export TF_PLUGIN_CACHE_DIR := $(HOME)/.terraform.d/plugin-cache
 
-#TERRAFORM = docker-compose run --rm \
-#	-e AWS_PROFILE=$(AWS_PROFILE) \
-#	-e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) \
-#	-e SCOPE=$(SCOPE) \
-#	-e TF_VAR_state_bucket=$(TFSTATE_BUCKET) \
-#	terraform
 TERRAFORM := terraform -chdir=$(SCOPE)
 
 
@@ -20,12 +10,7 @@ all:
 init: __require_scope
 	$(TERRAFORM) init \
 		-upgrade \
-		-get=true \
-		-backend=true \
-		-backend-config="region=$(AWS_DEFAULT_REGION)" \
-		-backend-config="profile=$(AWS_PROFILE)" \
-		-backend-config="bucket=$(TFSTATE_BUCKET)" \
-		-backend-config="key=$(TFSTATE_KEY)"
+		-get=true
 
 plan: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
 plan: init fmt __require_key_name
