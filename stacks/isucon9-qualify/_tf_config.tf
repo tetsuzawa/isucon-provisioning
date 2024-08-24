@@ -1,5 +1,7 @@
 terraform {
-  backend "s3" { /* see Makefile for actual options */ }
+  backend "local" {
+    path = "./terraform.tfstate"
+  }
 }
 
 provider "aws" {
