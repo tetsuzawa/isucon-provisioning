@@ -1,36 +1,33 @@
 # isucon-provisioning
 
-isucon環境作る
+# 使い方
 
-AWS上にkey pairを持ってる前提 & s3にtfstateを置くバケットがある前提
+1. AWS PROFILEの設定
 
-
-AWS_PROFILE
-https://github.com/tetsuzawa/isucon-provisioning/blob/440bd7db73c3c556d4d36530af6e8f5a661b5bf6/stacks/Makefile#L7
-
-
-key pair
-https://github.com/tetsuzawa/isucon-provisioning/blob/440bd7db73c3c556d4d36530af6e8f5a661b5bf6/stacks/isucon12-qualify/key_pair.tf#L3
-
-をよしなに書き換えて使ってください。
-
-
-# 実行方法
-
-
-生成
-
+```shell
+export AWS_PROFILE=<your profile>
 ```
+
+2. 生成
+
+```shell
 make -C stacks SCOPE=isuconXX-qualify apply
 ```
 
-破壊
+> [!NOTE]
+> 以下のコマンドで立ち上げたインスタンスのPublic IPアドレスを取得できます。
+> 
+> ```console
+> $ aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" --query 'Reservations[*].Instances[?Tags[?Key==`Name` && starts_with(Value, `isu_`)]].[Tags[?Key==`Name`]|[0].Value, PublicIpAddress]' --output text | awk '{print $1 "=" $2}'
+> isu_1=xxx.xxx.xxx.xxx
+> isu_2=xxx.xxx.xxx.xxx
+> isu_3=xxx.xxx.xxx.xxx
+> isu_bench=xxx.xxx.xxx.xxx
+> ```
 
-```
+
+3. 破壊
+
+```shell
 make -C stacks SCOPE=isuconXX-qualify destroy
 ```
-
-
-# メモ
-
-isucon本番と同じ環境にするには ssh keyのインストールとかを事前にやっておく必要がある。

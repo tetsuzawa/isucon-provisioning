@@ -1,16 +1,9 @@
-AWS_PROFILE := tetsu-varmos-admin
-AWS_DEFAULT_REGION := ap-northeast-1
-TFSTATE_BUCKET := isucon-provisioning-tfstate
-TFSTATE_KEY = $(SCOPE)/terraform.tfstate
 export TF_PLUGIN_CACHE_DIR := $(HOME)/.terraform.d/plugin-cache
 
-#TERRAFORM = docker-compose run --rm \
-#	-e AWS_PROFILE=$(AWS_PROFILE) \
-#	-e AWS_DEFAULT_REGION=$(AWS_DEFAULT_REGION) \
-#	-e SCOPE=$(SCOPE) \
-#	-e TF_VAR_state_bucket=$(TFSTATE_BUCKET) \
-#	terraform
 TERRAFORM := terraform -chdir=$(SCOPE)
+
+# (optional) 利用可能な鍵を登録することでデバッグするときにsshできる
+KEY_NAME :=
 
 
 .PHONY: all plan apply init workspace import mv fmt_r
@@ -20,15 +13,10 @@ all:
 init: __require_scope
 	$(TERRAFORM) init \
 		-upgrade \
-		-get=true \
-		-backend=true \
-		-backend-config="region=$(AWS_DEFAULT_REGION)" \
-		-backend-config="profile=$(AWS_PROFILE)" \
-		-backend-config="bucket=$(TFSTATE_BUCKET)" \
-		-backend-config="key=$(TFSTATE_KEY)"
+		-get=true
 
 plan: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
-plan: init fmt __require_key_name
+plan: init fmt
 	$(TERRAFORM) plan $(KEY_NAME_VAR) -parallelism=1000
 
 show: init
@@ -42,7 +30,7 @@ plan_target: init
 	$(TERRAFORM) plan -target=$(target)
 
 apply: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
-apply: init fmt __require_key_name
+apply: init fmt
 	$(TERRAFORM) apply $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000
 
 apply_target: target:=
@@ -51,7 +39,7 @@ apply_target: init fmt
 	$(TERRAFORM) apply $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000 -target=$(target)
 
 destroy: KEY_NAME_VAR := -var key_name=$(KEY_NAME)
-destroy: init __require_key_name
+destroy: init
 	$(TERRAFORM) destroy $(KEY_NAME_VAR) -auto-approve=false -parallelism=1000 $(ARG)
 
 fmt: __require_scope
@@ -60,9 +48,4 @@ fmt: __require_scope
 __require_scope:
 ifeq ($(SCOPE),)
 	$(error "You must specify SCOPE #=> Like $$ make SCOPE=hello-user2/user-name xxx")
-endif
-
-__require_key_name:
-ifeq ($(SCOPE),)
-	$(error "You must specify KEY_NAME #=> Like $$ make KEY_NAME=<your ssh key name> xxx")
 endif

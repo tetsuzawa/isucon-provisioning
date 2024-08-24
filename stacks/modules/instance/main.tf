@@ -7,6 +7,8 @@ resource "aws_instance" "instance" {
   key_name                    = var.key_name
   associate_public_ip_address = true
   iam_instance_profile        = ""
+  # <ssh_user_name>のユーザーに対して<github_ids>の公開鍵を登録することでISUCON本番のようにSSHログインできるようにする
+  # 通常<ssh_user_name>は`isucon`
   user_data                   = <<-EOF
                                     #!/bin/bash
                                     set -eux
